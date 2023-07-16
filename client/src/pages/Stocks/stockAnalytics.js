@@ -76,6 +76,9 @@ export default function DashboardAppPage() {
     const stockCompanyData = await axios
       .get(`https://www.alphavantage.co/query?function=OVERVIEW&symbol=${paramsSymbol}&apikey=${process.env.REACT_APP_MY_API}`)
       .then(({ data }) => data);
+      console.log(dailyStockAnalytics);
+      console.log(monthlyStockAnalytics);
+      console.log(stockCompanyData);
     setDailyStockData(dailyStockAnalytics);
     setMonthlyStockData(monthlyStockAnalytics);
     setCompanyDetails(stockCompanyData);
