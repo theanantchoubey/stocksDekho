@@ -54,7 +54,7 @@ function a11yProps(index) {
 
 export default function CoinsPage() {
   const theme = useTheme();
-  const [dailyCoinData, setDailyCoinData] = useState([]);
+  // const [dailyCoinData, setDailyCoinData] = useState([]);
   const [monthlyCoinData, setMonthlyCoinData] = useState([]);
   const [yearlyCoinData, setYearlyCoinData] = useState([]);
   const [coinDetails, setCoinDetails] = useState({});
@@ -72,9 +72,9 @@ export default function CoinsPage() {
     setValue(newValue);
   };
   const fetchCoinData = async (paramsId) => {
-    const coinAnalyticsDaily = await axios
-      .get(`https://api.coingecko.com/api/v3/coins/${paramsId}/market_chart?vs_currency=usd&days=1&interval=hourly`)
-      .then(({ data }) => data);
+    // const coinAnalyticsDaily = await axios
+    //   .get(`https://api.coingecko.com/api/v3/coins/${paramsId}/market_chart?vs_currency=usd&days=1&interval=hourly`)
+    //   .then(({ data }) => data);
     const coinAnalyticsMonthly = await axios
       .get(`https://api.coingecko.com/api/v3/coins/${paramsId}/market_chart?vs_currency=usd&days=30&interval=daily`)
       .then(({ data }) => data);
@@ -87,7 +87,7 @@ export default function CoinsPage() {
         'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=1h%2C24h%2C7d'
       )
       .then(({ data }) => data);
-    setDailyCoinData(coinAnalyticsDaily);
+    // setDailyCoinData(coinAnalyticsDaily);
     setMonthlyCoinData(coinAnalyticsMonthly);
     setYearlyCoinData(coinAnalyticsYearly);
     setCoinDetails(coinData);
@@ -97,20 +97,20 @@ export default function CoinsPage() {
   useEffect(() => {
     fetchCoinData(paramsId);
   }, []);
-  const { prices: dailyPrices } = dailyCoinData;
+  // const { prices: dailyPrices } = dailyCoinData;
   const { prices: monthlyPrices } = monthlyCoinData;
   const { prices: yearlyPrices } = yearlyCoinData;
 
-  if (dailyPrices) {
-    for (let i = 0; i < 25; i++) {
-      let dailyCoinArray = dailyPrices[i];
-      let date = new Date(dailyCoinArray[0]);
-      let coinPrice = +dailyCoinArray[1];
-      dailyChartLabels.push(date.toLocaleString('en-US'));
-      let price = coinPrice.toFixed(3);
-      dailyChartCoinPrice.push(price);
-    }
-  }
+  // if (dailyPrices) {
+  //   for (let i = 0; i < 25; i++) {
+  //     let dailyCoinArray = dailyPrices[i];
+  //     let date = new Date(dailyCoinArray[0]);
+  //     let coinPrice = +dailyCoinArray[1];
+  //     dailyChartLabels.push(date.toLocaleString('en-US'));
+  //     let price = coinPrice.toFixed(3);
+  //     dailyChartCoinPrice.push(price);
+  //   }
+  // }
   if (monthlyPrices) {
     for (let i = 0; i < 31; i++) {
       let coinArray = monthlyPrices[i];
@@ -161,7 +161,7 @@ export default function CoinsPage() {
         <title> {name ? name : 'Loading...'} </title>
       </Helmet>
 
-      {dailyPrices && monthlyPrices && yearlyPrices && coinDetails ? (
+      { monthlyPrices && yearlyPrices && coinDetails ? (
         <Container maxWidth="xl">
           <Typography sx={{ px: 2, mb: 3 }} component={Link} color="primary" to={`/dashboard/coins`}>
             <KeyboardDoubleArrowLeftIcon fontSize="30" color="white" /> Back to Crypto Currencies Page
@@ -180,12 +180,12 @@ export default function CoinsPage() {
               <Box sx={{ width: '100%' }}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                   <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                    <Tab label="24 Hr" {...a11yProps(0)} />
-                    <Tab label="30 Days" {...a11yProps(1)} />
-                    <Tab label="1 Year" {...a11yProps(2)} />
+                    {/* <Tab label="24 Hr" {...a11yProps(0)} /> */}
+                    <Tab label="30 Days" {...a11yProps(0)} />
+                    <Tab label="1 Year" {...a11yProps(1)} />
                   </Tabs>
                 </Box>
-                <TabPanel value={value} index={0}>
+                {/* <TabPanel value={value} index={0}>
                   <DataRepresentation
                     sx={{ p: 0 }}
                     title={`$ ${currentPrice}`}
@@ -199,9 +199,9 @@ export default function CoinsPage() {
                         data: dailyChartCoinPrice,
                       },
                     ]}
-                  />
-                </TabPanel>
-                <TabPanel value={value} index={1}>
+                  /> */}
+                {/* </TabPanel> */}
+                <TabPanel value={value} index={0}>
                   <DataRepresentation
                     sx={{ p: 0 }}
                     title={`$ ${currentPrice}`}
@@ -218,7 +218,7 @@ export default function CoinsPage() {
                   />
                   {/* Item Two */}
                 </TabPanel>
-                <TabPanel value={value} index={2}>
+                <TabPanel value={value} index={1}>
                   <DataRepresentation
                     sx={{ p: 0 }}
                     title={`$ ${currentPrice}`}

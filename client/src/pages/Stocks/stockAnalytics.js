@@ -48,7 +48,7 @@ function a11yProps(index) {
 }
 export default function DashboardAppPage() {
   const theme = useTheme();
-  const [dailyStockData, setDailyStockData] = useState({});
+  // const [dailyStockData, setDailyStockData] = useState({});
   const [monthlyStockData, setMonthlyStockData] = useState({});
   const [companyDetails, setCompanyDetails] = useState({});
   const [value, setValue] = useState(0);
@@ -68,18 +68,18 @@ export default function DashboardAppPage() {
     const monthlyStockAnalytics = await axios
       .get(`https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=${paramsSymbol}&apikey=${process.env.REACT_APP_MY_API}`)
       .then(({ data }) => data);
-    const dailyStockAnalytics = await axios
-      .get(
-        `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${paramsSymbol}&outputsize=full&apikey=${process.env.REACT_APP_MY_API}`
-      )
-      .then(({ data }) => data);
+    // const dailyStockAnalytics = await axios
+    //   .get(
+    //     `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${paramsSymbol}&outputsize=full&apikey=${process.env.REACT_APP_MY_API}`
+    //   )
+    //   .then(({ data }) => data);
     const stockCompanyData = await axios
       .get(`https://www.alphavantage.co/query?function=OVERVIEW&symbol=${paramsSymbol}&apikey=${process.env.REACT_APP_MY_API}`)
       .then(({ data }) => data);
-      console.log(dailyStockAnalytics);
+      // console.log(dailyStockAnalytics);
       console.log(monthlyStockAnalytics);
       console.log(stockCompanyData);
-    setDailyStockData(dailyStockAnalytics);
+    // setDailyStockData(dailyStockAnalytics);
     setMonthlyStockData(monthlyStockAnalytics);
     setCompanyDetails(stockCompanyData);
   };
@@ -89,30 +89,30 @@ export default function DashboardAppPage() {
     fetchStockData(paramsSymbol);
   }, []);
   const { 'Monthly Time Series': monthlyTimeSeries } = monthlyStockData;
-  const { 'Time Series (Daily)': dailyTimeSeries } = dailyStockData;
+  // const { 'Time Series (Daily)': dailyTimeSeries } = dailyStockData;
 
   let currentPrice = '';
-  if (dailyTimeSeries) {
-    let i = 0;
-    Object.keys(dailyTimeSeries).forEach((key) => {
-      i++;
-      if (i < 2) {
-        currentPrice = +dailyTimeSeries[key]['4. close'];
-        Math.round(currentPrice, 2).toString();
-      }
-      if (i < 24) {
-        let result = key.replace(/-/g, '/');
-        let high = dailyTimeSeries[key]['2. high'];
-        let low = dailyTimeSeries[key]['3. low'];
-        let close = dailyTimeSeries[key]['4. close'];
+  // if (dailyTimeSeries) {
+  //   let i = 0;
+  //   Object.keys(dailyTimeSeries).forEach((key) => {
+  //     i++;
+  //     if (i < 2) {
+  //       currentPrice = +dailyTimeSeries[key]['4. close'];
+  //       Math.round(currentPrice, 2).toString();
+  //     }
+  //     if (i < 24) {
+  //       let result = key.replace(/-/g, '/');
+  //       let high = dailyTimeSeries[key]['2. high'];
+  //       let low = dailyTimeSeries[key]['3. low'];
+  //       let close = dailyTimeSeries[key]['4. close'];
 
-        dailyChartHigh.push(+high);
-        dailyChartLow.push(+low);
-        dailyChartClose.push(+close);
-        dailyChartLabels.push(result);
-      }
-    });
-  }
+  //       dailyChartHigh.push(+high);
+  //       dailyChartLow.push(+low);
+  //       dailyChartClose.push(+close);
+  //       dailyChartLabels.push(result);
+  //     }
+  //   });
+  // }
   if (monthlyTimeSeries) {
     let i = 0;
     Object.keys(monthlyTimeSeries).forEach((key) => {
@@ -136,7 +136,7 @@ export default function DashboardAppPage() {
   }
 
   const { 'Meta Data': monthlyMetaData } = monthlyStockData;
-  const { 'Meta Data': dailyMetaData } = dailyStockData;
+  // const { 'Meta Data': dailyMetaData } = dailyStockData;
   const {
     Symbol: symbol,
     Name: coName,
@@ -164,7 +164,7 @@ export default function DashboardAppPage() {
         <title> {coName ? coName : 'Loading...'} </title>
       </Helmet>
 
-      {dailyMetaData && monthlyMetaData && companyDetails ? (
+      {monthlyMetaData && companyDetails ? (
         <Container maxWidth="xl">
           <Typography sx={{ px: 2, mb: 3 }} component={Link} color="primary" to={`/dashboard/stocks`}>
             <KeyboardDoubleArrowLeftIcon fontSize="30" color="white" /> Back to Stocks Page
@@ -183,11 +183,11 @@ export default function DashboardAppPage() {
               <Box sx={{ width: '100%' }}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                   <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                    <Tab label="30 Days" {...a11yProps(0)} />
-                    <Tab label="1 Year" {...a11yProps(1)} />
+                    {/* <Tab label="30 Days" {...a11yProps(0)} /> */}
+                    <Tab label="1 Year" {...a11yProps(0)} />
                   </Tabs>
                 </Box>
-                <TabPanel value={value} index={0}>
+                {/* <TabPanel value={value} index={0}>
                   <DataRepresentation
                     title={`$ ${currentPrice}`}
                     subheader={`Last Refreshed ${
@@ -215,8 +215,8 @@ export default function DashboardAppPage() {
                       },
                     ]}
                   />
-                </TabPanel>
-                <TabPanel value={value} index={1}>
+                </TabPanel> */}
+                <TabPanel value={value} index={0}>
                   {' '}
                   <DataRepresentation
                     title={`$ ${currentPrice}`}
